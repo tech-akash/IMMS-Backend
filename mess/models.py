@@ -71,7 +71,7 @@ class GoldToken(models.Model):
     TokenCount=models.IntegerField(default=0)
     # time=models.CharField(max_length=1,choices=TIME, default='0')
     #Expiry will be generally 30 days from the day of buying tokens
-    TokenExpiry=models.DateField()
+    TokenExpiry=models.DateField(null=True,blank=True)
     #minimum fee needed for user to continue his gold token 
     # passRenewalFee=models.IntegerField(null=True,blank=True)
 
