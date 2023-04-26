@@ -122,7 +122,9 @@ def update_menu(request,*args, **kwargs):
 # @csrf_exempt
 @api_view(['POST'])
 def giveFeedback(request,*args, **kwargs):
-    user=User.objects.get(username=request.data['username'])
+    print(request.data)
+    print(request.POST)
+    user=User.objects.get(username=request.POST.get('username',None))
     serializer=FeedbackSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(user=user)
