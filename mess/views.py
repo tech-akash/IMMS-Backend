@@ -24,6 +24,7 @@ from datetime import date
 from django.utils import timezone
 from datetime import datetime,timedelta
 import pytz
+from django.views.decorators.csrf import csrf_exempt
 
 ist = pytz.timezone('Asia/Kolkata')
 # class GoogleLogin(SocialLoginView):
@@ -101,6 +102,7 @@ def home_view(request,*args,**kwargs):
     serializer=MenuSerializer(obj,many=True)
     return Response(serializer.data)
 
+@csrf_exempt
 @api_view(['POST'])
 def update_menu(request,*args, **kwargs): 
     obj=Menu.objects.get(day=request.data['day'],time=request.data['time'])
@@ -117,6 +119,7 @@ def update_menu(request,*args, **kwargs):
         serializer=MenuSerializer(obj)
         return Response(serializer.data)
 
+@csrf_exempt
 @api_view(['POST'])
 def giveFeedback(request,*args, **kwargs):
     user=User.objects.get(username=request.data['username'])
@@ -307,6 +310,7 @@ def NumberofPeople(request,*args, **kwargs):
 
 
 @api_view(['POST'])
+
 def scanQr(request,*args, **kwargs):
     user=User.objects.get(username=request.data['username'])
     day,time=GetDayTime()
