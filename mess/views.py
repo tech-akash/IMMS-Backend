@@ -104,33 +104,39 @@ def home_view(request,*args,**kwargs):
 
 # @csrf_exempt
 @api_view(['POST'])
-def update_menu(request,*args, **kwargs): 
-    obj=Menu.objects.get(day=request.data['day'],time=request.data['time'])
-    if request.method == 'POST':
-        # print(request.POST)
-        print("data:", request.data)
-        serializer=MenuSerializer(obj,data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+def update_menu(request,*args, **kwargs):
+    try: 
+        obj=Menu.objects.get(day=request.data['day'],time=request.data['time'])
+        if request.method == 'POST':
+            # print(request.POST)
+            print("data:", request.data)
+            serializer=MenuSerializer(obj,data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response(serializer.errors)
         else:
-            return Response(serializer.errors)
-    else:
-        serializer=MenuSerializer(obj)
-        return Response(serializer.data)
+            serializer=MenuSerializer(obj)
+            return Response(serializer.data)
+    except:
+        return Response({'status':400,'message':'something went wrong'})
 
 # @csrf_exempt
 @api_view(['POST'])
 def giveFeedback(request,*args, **kwargs):
-    print(request.POST)
-    print(request.data['_content']['username'])
-    user=User.objects.get(username=request.POST.get('username',None))
-    serializer=FeedbackSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save(user=user)
-        return Response(serializer.data)
-    else:
-        return Response(serializer.errors)
+    # print(request.POST)
+    # print(request.data['_content']['username'])
+    try:
+        user=User.objects.get(username=request.POST.get('username',None))
+        serializer=FeedbackSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=user)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+    except:
+        return Response({'status':400,'message':'something went wrong'})
 
 
 @api_view(['GET'])
@@ -144,11 +150,14 @@ def getFeedback(request,*args, **kwargs):
 @api_view(['GET','POST'])
 def viewSilverToken(request,*args, **kwargs):
     if request.method=='POST':
-        day=request.data['day']
-        time=request.data['time']
-        obj=Menu.objects.get(day=day,time=time)
-        
-        return Response({'order_value':obj.price})
+        try:
+            day=request.data['day']
+            time=request.data['time']
+            obj=Menu.objects.get(day=day,time=time)
+            
+            return Response({'order_value':obj.price})
+        except:
+            return Response({'status':400,'message':'something went wrong'})
     else:
         return Response({'status':200})
 
