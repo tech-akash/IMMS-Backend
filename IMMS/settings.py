@@ -103,11 +103,12 @@ MIDDLEWARE = [
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 # Rest Settings
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework.permissions.AllowAny',
-#     ),
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+    # 'rest_framework.authentication.SessionAuthentication',
+    'rest_framework.authentication.BasicAuthentication',
+]
+}
 AUTHENTICATION_BACKENDS = (
    'django.contrib.auth.backends.ModelBackend',
 )
@@ -220,3 +221,4 @@ SITE_URL='http://localhost:3000'
 STRIPE_SECRET_KEY=os.environ.get("STRIPE_SECRET_KEY")
 
 # STRIPE_SECRET_KEY='sk_test_51MyXY2SGJ3YbEH6gvCFHMOPNuTH7Cy7cRV3bePnFguEASdeDo2mKtOTvQGLvbKMNgVmZgorw7X0OMUNmbi8AI4Wi00YcdJgeyX'
+
