@@ -65,7 +65,8 @@ def login_view(request):
     print(data['token']['email'])
     username=data['token']['sub']
     email=data['token']['email']
-    FirstName=data['']
+    firstName=['token']['given_name']
+    lastName=['token']['family_name']
     type=None
     try:
         # print('user logged in')
@@ -79,7 +80,7 @@ def login_view(request):
         type='Student'
         Student.objects.create(user=user,FirstName=data['token']['given_name'],LastName=data['token']['family_name'],email=email,type='Student')
         GoldToken.objects.create(user=user)
-    return Response({'status':200,'type':type,'username':username})
+    return Response({'status':200,'type':type,'username':username,'firstname':firstName,'lastname':lastName})
 
 
 
