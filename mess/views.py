@@ -66,8 +66,8 @@ def login_view(request):
     print(data['token']['email'])
     username=data['token']['sub']
     email=data['token']['email']
-    firstName=['token']['given_name']
-    lastName=['token']['family_name']
+    firstName=data['token']['given_name']
+    lastName=data['token']['family_name']
     type=None
     try:
         # print('user logged in')
