@@ -105,6 +105,7 @@ def home_view(request,*args,**kwargs):
 # @csrf_exempt
 @api_view(['POST'])
 def update_menu(request,*args, **kwargs):
+    print(request.data)
     try: 
         obj=Menu.objects.get(day=request.data['day'],time=request.data['time'])
         if request.method == 'POST':
