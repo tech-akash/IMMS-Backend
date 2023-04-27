@@ -81,7 +81,7 @@ def login_view(request):
         type='Student'
         Student.objects.create(user=user,FirstName=data['token']['given_name'],LastName=data['token']['family_name'],email=email,type='Student')
         GoldToken.objects.create(user=user)
-    return Response({'status':200,'type':type,'username':username,'firstname':firstName,'lastname':lastName})
+    return Response({'status':200,'type':type,'username':username,'firstname':firstName,'lastname':lastName,'email':email})
 
 
 
