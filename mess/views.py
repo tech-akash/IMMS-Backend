@@ -129,7 +129,7 @@ def giveFeedback(request,*args, **kwargs):
     # print(request.POST)
     # print(request.data['_content']['username'])
     try:
-        user=User.objects.get(username=request.POST.get('username',None))
+        user=User.objects.get(username=request.data['username'])
         serializer=FeedbackSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=user)
