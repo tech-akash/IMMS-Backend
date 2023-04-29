@@ -185,7 +185,7 @@ def viewGoldToken(request,*args, **kwargs):
         
         return Response({'token_count':obj.TokenCount,'order_value':obj.Price})
     else:
-        return Response({'status':200})
+        return Response({'status':200}) 
 
 
 
@@ -233,16 +233,133 @@ def NumberofPeople(request,*args, **kwargs):
     today=datetime.now(ist).date()
     tomorrow=(datetime.now(ist)+timedelta(1)).date()
     obj=RegisteredStudent.objects.filter(date=today).last()
-    obj1=RegisteredStudent.objects.filter(date=tomorrow).last()
+    allUser=User.objects.all()
+    if not obj:
+        breakfast=0
+        lunch =0
+        dinner=0
+        day,time=GetDayTime()
+        for user in allUser:
+            leave=Leave.objects.filter(user=user,start_date__lte=today,end_date__gte=today)
+            noteating=NotEatingToday.objects.filter(user=user,date = today)
+            if not leave :
+            # pass
+                silverToken=SilverToken.objects.filter(user=user,tokenDate__lte=tomorrow,tokenDate__gte=today).count()
+                goldToken=GoldToken.objects.get(user=user)
+                goldTokenCount = goldToken.TokenCount
+                if silverToken+goldTokenCount>=3:
+                    breakfast+=1
+                    lunch+=1
+                    dinner+=1
+                    for y in noteating:
+                        if y.time==0:
+                            breakfast-=1
+                        elif y.time==1:
+                            lunch-=1
+                        else:
+                            dinner-=1
+
+                elif silverToken+goldTokenCount==2:
+                    breakfast+=1
+                    lunch+=1
+                    z=1
+                    cnt=len(noteating)
+                    for y in noteating:
+                        if y.time==0:
+                            breakfast-=1
+                        elif y.time==1:
+                            lunch-=1
+                        else:
+                            z=0
+                    if cnt>0:
+                        dinner+=z
+                elif silverToken+goldTokenCount==1:
+                    breakfast+=1
+                    z=1
+                    y=1
+                    cnt=len(noteating)
+                    for y in noteating:
+                        if y.time==0:
+                            breakfast-=1
+                        elif y.time==1:
+                            y=0
+                        else:
+                            z=0
+                    if cnt>0:
+                        lunch+=y
+                        if y==1:
+                            cnt-=1
+                    
+                    if cnt>0:
+                        dinner+=z
+        RegisteredStudent.objects.create(date=today,breakfast=breakfast,lunch=lunch,dinner=dinner)
+    obj=RegisteredStudent.objects.filter(date=today).last()
+    tom_breakfast=0
+    tom_lunch=0
+    tom_dinner=0
+    for user in allUser:
+        leave=Leave.objects.filter(user=user,start_date__lte=tomorrow,end_date__gte=tomorrow)
+        noteating=NotEatingToday.objects.filter(user=user,date = tomorrow)
+        if not leave :
+            # pass
+            silverToken=SilverToken.objects.filter(user=user,tokenDate__lte=tomorrow,tokenDate__gte=today).count()
+            goldToken=GoldToken.objects.get(user=user)
+            goldTokenCount = goldToken.TokenCount
+            if silverToken+goldTokenCount>=6:
+                tom_breakfast+=1
+                tom_lunch+=1
+                tom_dinner+=1
+                for y in noteating:
+                    if y.time==0:
+                        tom_breakfast-=1
+                    elif y.time==1:
+                        tom_lunch-=1
+                    else:
+                        tom_dinner-=1
+
+            elif silverToken+goldTokenCount==5:
+                tom_breakfast+=1
+                lunch+=1
+                z=1
+                cnt=len(noteating)
+                for y in noteating:
+                    if y.time==0:
+                        tom_breakfast-=1
+                    elif y.time==1:
+                        tom_lunch-=1
+                    else:
+                        z=0
+                if cnt>0:
+                    tom_dinner+=z
+            elif silverToken+goldTokenCount==4:
+                tom_breakfast+=1
+                z=1
+                y=1
+                cnt=len(noteating)
+                for y in noteating:
+                    if y.time==0:
+                        tom_breakfast-=1
+                    elif y.time==1:
+                        y=0
+                    else:
+                        z=0
+                if cnt>0:
+                    tom_lunch+=y
+                    if y==1:
+                        cnt-=1
+                
+                if cnt>0:
+                    tom_dinner+=z
+    # obj1=RegisteredStudent.objects.filter(date=tomorrow).last()
     return Response({'today':{
         '0':obj.breakfast,
         '1':obj.lunch,
         '2':obj.dinner
     },
     'tommorow':{
-        '0':obj1.breakfast,
-        '1':obj1.lunch,
-        '2':obj1.dinner
+        '0':tom_breakfast,
+        '1':tom_lunch,
+        '2':tom_dinner
     }})
     # users=User.objects.all()
     # day,time=GetDayTime()
@@ -351,6 +468,30 @@ def scanQr(request,*args, **kwargs):
             return Response({'status':401,'message':'You filled for the leave'})
     else:
         return Response({'status':401,'message':'You filled for the leave'})
+    
+@api_view(['POST'])
+def cancelMeal(request,*args, **kwargs):
+    try:
+        user=User.objects.get(username=request.data['username'])
+        # day,time=GetDayTime()
+        date=request.data['date']
+        time=request.data['time']
+        NotEatingToday.objects.create(user=user,date=date,time=time)
+        return Response({'status':200})
+    except:
+        return Response({'status':400})
+
+
+@api_view(['POST'])
+def leaveView(request,*args, **kwargs):
+    try:
+        user=User.objects.get(username=request.data['username'])
+        start_date=request.data['startDate']
+        end_date=request.data['endDate']
+        Leave.objects.create(user=user,start_date=start_date,end_date=end_date)
+        return Response({'status':200})
+    except:
+        return Response({'status':400})
     
 
 

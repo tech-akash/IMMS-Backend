@@ -16,4 +16,6 @@ urlpatterns = [
     path('get-tokens/',ShowTokens),
     path('test/', test_view, name='test_view'),
     path('menu/',get_menu),
+    path('cancel-meal/',cancelMeal),
+    path('leave/',leaveView),
 ]
