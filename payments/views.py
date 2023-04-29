@@ -29,8 +29,8 @@ class StripeCheckoutView(APIView):
                     },
                 ],
                 mode='payment',
-                success_url=settings.SITE_URL + '/?success=true&session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=settings.SITE_URL + '?canceled=true',
+                success_url=settings.SITE_URL+'/subscribe' + '/?success=true&session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=settings.SITE_URL +'/subscribe'+ '?canceled=true',
             )
             return redirect(checkout_session.url)
         except:
