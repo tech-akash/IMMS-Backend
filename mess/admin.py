@@ -11,4 +11,6 @@ admin.site.register(Feedback)
 admin.site.register(NotEatingToday)
 admin.site.register(RegisteredStudent)
 admin.site.register(Student)
+admin.site.register(TakenMeal)
+
 # admin.site.register(User)

@@ -128,8 +128,14 @@ class checkAlreadyEaten(models.Model):
 
 class RegisteredStudent(models.Model):
     date=models.DateField()
-    breakfast=models.IntegerField()
-    lunch=models.IntegerField()
-    dinner=models.IntegerField()
+    breakfast=models.IntegerField(default=0)
+    lunch=models.IntegerField(default=0)
+    dinner=models.IntegerField(default=0)
+
+class TakenMeal(models.Model):
+    date=models.DateField()
+    breakfast=models.IntegerField(default=0)
+    lunch=models.IntegerField(default=0)
+    dinner=models.IntegerField(default=0)
     
 

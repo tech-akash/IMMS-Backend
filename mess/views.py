@@ -445,6 +445,11 @@ def scanQr(request,*args, **kwargs):
     day,time=GetDayTime()
     x=datetime.now(ist).date()
     y=checkAlreadyEaten.objects.filter(user=user,date=x,time=time)
+    try:
+        obj=TakenMeal.objects.get(date=y)
+    except:
+        obj=TakenMeal.objects.create(date=y)
+    
     if y:
         return Response({'status':401,'message':'You have already eaten'})
     leave=Leave.objects.filter(user=user,start_date__lte=x,end_date__gte=x)
@@ -458,11 +463,25 @@ def scanQr(request,*args, **kwargs):
                     goldToken.TokenCount-=1
                     goldToken.save()
                     checkAlreadyEaten.objects.create(user=user,date=x,time=time)
+                    if time ==0:
+                        obj.breakfast+=1
+                    elif time==1:
+                        obj.lunch+=1
+                    else:
+                        obj.dinner+=1
+                    obj.save()
                     return Response({'status':200,'message':'Gold Token is Used'})
                 return Response({'status':400,'message':'You don\'t have any token'})
             else:
                 silverToken.delete()
+                if time ==0:
+                    obj.breakfast+=1
+                elif time==1:
+                    obj.lunch+=1
+                else:
+                    obj.dinner+=1
                 checkAlreadyEaten.objects.create(user=user,date=x,time=time)
+                obj.save()
                 return Response({'status':200,'message':'Silver Token is Used'})
         else:
             return Response({'status':401,'message':'You filled for the leave'})
@@ -493,6 +512,28 @@ def leaveView(request,*args, **kwargs):
     except:
         return Response({'status':400})
     
+
+@api_view(['GET'])
+def getReport(request,*args, **kwargs):
+    list=[]
+    for x in range(1,2):
+        date=(datetime.now(ist)-timedelta(x)).date()
+        print(date)
+        register_student=0
+        # print(obj1.dinner)
+
+        try:
+            # print('hiii')
+            obj1=TakenMeal.objects.filter(date=date).last()
+            obj=RegisteredStudent.objects.filter(date=date).last()
+            # print(obj)
+            list.append({'date':date,'registeredBreakfast':obj.breakfast,'registeredLunch':obj.lunch,'registeredDinner':obj.dinner,'takenMealBreakfast':obj1.breakfast,'takenMealLunch':obj1.lunch,'takenMealDinner':obj1.dinner})
+        except:
+            print("error")
+            pass
+
+        
+    return Response(list)
 
 
 

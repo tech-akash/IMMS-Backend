@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Menu,Feedback,Student, SilverToken, GoldToken
+from .models import *
 
 
 
@@ -47,6 +47,13 @@ class SilverTokenSerializers(serializers.ModelSerializer):
     class Meta:
         model=SilverToken
         fields=['tokenTime','tokenDate']
+
+    
+class TakenMealSerializers(serializers.ModelSerializer):
+    
+    class Meta:
+        model=TakenMeal
+        fields=['date']
 
 
 

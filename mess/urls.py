@@ -18,4 +18,5 @@ urlpatterns = [
     path('menu/',get_menu),
     path('cancel-meal/',cancelMeal),
     path('leave/',leaveView),
+    path('get-report/',getReport),
 ]
