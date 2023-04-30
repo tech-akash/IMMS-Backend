@@ -536,4 +536,19 @@ def getReport(request,*args, **kwargs):
     return Response(list)
 
 
+@api_view(['GET'])
+def getallUserTransactions(request,*args, **kwargs):
+    transactions=Transactions.objects.all().order_by('-timeStamp')
+    serializer=TransactionSerializer(transactions,many=True)
+    return Response(serializer.data)
 
+@api_view(['POST'])
+def getuserTransactions(request,*args, **kwargs):
+    try:
+        user=User.objects.get(username=request.data['username'])
+        student=Student.objects.get(user=user)
+        transactions=Transactions.objects.filter(email=student.email).order_by('-timeStamp')
+        serializer=TransactionSerializer(transactions,many=True)
+        return Response(serializer.data)
+    except:
+        return Response({'message':'something went wrong'})

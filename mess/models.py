@@ -137,5 +137,13 @@ class TakenMeal(models.Model):
     breakfast=models.IntegerField(default=0)
     lunch=models.IntegerField(default=0)
     dinner=models.IntegerField(default=0)
+
+class Transactions(models.Model):
+    firstName=models.CharField(max_length=50)
+    lastName=models.CharField(max_length=50)
+    timeStamp=models.DateTimeField(auto_now_add=True)
+    email=models.CharField(max_length=100)
+    amount=models.IntegerField()
+    numberOfToken=models.IntegerField()
     
 

@@ -42,28 +42,31 @@ class StripeCheckoutView(APIView):
 @api_view(['POST'])
 def get_status(request,session_id):
         # session_id = request.GET.get('session_id')
-        print(session_id)
+        # print(session_id)
         try:
             session = stripe.checkout.Session.retrieve(session_id)
-            print(session)
+            # print(session)
             payment_status = session.payment_status
             if payment_status == 'paid':
-                username=request.data['username']
                 user=User.objects.get(username=username)
+                student=Student.objects.get(user=user)
+                username=request.data['username']
                 token=request.data['token']
                 if token=='0':
                     date=request.data['date']
                     time=request.data['time']
-
+                    Transactions.objects.create(email=user.email,amount=60,numberOfToken=1,firstName=student.FirstName,lastName=student.LastName)
                     SilverToken.objects.create(user=user,tokenDate=date,tokenTime=time)
                 else:
                     goldToken=GoldToken.objects.get(user=user)
                     if token=='1':
                         goldToken.TokenCount+=45
                         goldToken.save()
+                        Transactions.objects.create(email=student.email,amount=1000,numberOfToken=45,firstName=student.FirstName,lastName=student.LastName)
                     else:
                         goldToken.TokenCount+=90
                         goldToken.save()
+                        Transactions.objects.create(email=student.email,amount=2000,numberOfToken=90,firstName=student.FirstName,lastName=student.LastName)
                      
                  
             return Response({'status': payment_status})

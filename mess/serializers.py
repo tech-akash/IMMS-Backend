@@ -55,5 +55,11 @@ class TakenMealSerializers(serializers.ModelSerializer):
         model=TakenMeal
         fields=['date']
 
+class TransactionSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model=Transactions
+        fields='__all__'
+
 
 

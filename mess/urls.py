@@ -19,4 +19,7 @@ urlpatterns = [
     path('cancel-meal/',cancelMeal),
     path('leave/',leaveView),
     path('get-report/',getReport),
+    path('get-all-transactions/',getallUserTransactions),
+    path('get-my-transactions/',getuserTransactions),
+
 ]

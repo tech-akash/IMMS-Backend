@@ -14,4 +14,4 @@ admin.site.register(Student)
 admin.site.register(TakenMeal)
 admin.site.register(Leave)
 
-# admin.site.register(User)
+admin.site.register(Transactions)
