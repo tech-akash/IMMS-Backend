@@ -142,6 +142,8 @@ class Transactions(models.Model):
     firstName=models.CharField(max_length=50)
     lastName=models.CharField(max_length=50)
     timeStamp=models.DateTimeField(auto_now_add=True)
+    date=models.DateField(auto_now_add=True,blank=True,null=True)
+    time=models.TimeField(auto_now_add=True,blank=True,null=True)
     email=models.CharField(max_length=100)
     amount=models.IntegerField()
     numberOfToken=models.IntegerField()
