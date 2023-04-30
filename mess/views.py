@@ -441,17 +441,26 @@ def NumberofPeople(request,*args, **kwargs):
 @api_view(['POST'])
 
 def scanQr(request,*args, **kwargs):
+    # print('hiii')
+    # print(request.data)
     user=User.objects.get(username=request.data['username'])
+    print(user)
     day,time=GetDayTime()
     x=datetime.now(ist).date()
     y=checkAlreadyEaten.objects.filter(user=user,date=x,time=time)
+    # print('1')
+
     try:
-        obj=TakenMeal.objects.get(date=y)
+        # print("helllo")
+        obj=TakenMeal.objects.get(date=x)
     except:
-        obj=TakenMeal.objects.create(date=y)
-    
+        # print("jdfkdjfkdjf")
+        obj=TakenMeal.objects.create(date=x)
+        # print('fuck')
+    # print('3')
     if y:
         return Response({'status':401,'message':'You have already eaten'})
+    # print('2')
     leave=Leave.objects.filter(user=user,start_date__lte=x,end_date__gte=x)
     if not leave:
         noteating=NotEatingToday.objects.filter(user=user,date = x,time=time)
