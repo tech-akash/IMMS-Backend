@@ -48,9 +48,9 @@ def get_status(request,session_id):
             # print(session)
             payment_status = session.payment_status
             if payment_status == 'paid':
+                username=request.data['username']
                 user=User.objects.get(username=username)
                 student=Student.objects.get(user=user)
-                username=request.data['username']
                 token=request.data['token']
                 if token=='0':
                     date=request.data['date']
@@ -71,6 +71,7 @@ def get_status(request,session_id):
                  
             return Response({'status': payment_status})
         except Exception as e:
+            # print(e)
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
