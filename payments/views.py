@@ -55,7 +55,7 @@ def get_status(request,session_id):
                 if token=='0':
                     date=request.data['date']
                     time=request.data['time']
-                    Transactions.objects.create(email=user.email,amount=60,numberOfToken=1,firstName=student.FirstName,lastName=student.LastName)
+                    Transactions.objects.create(email=student.email,amount=60,numberOfToken=1,firstName=student.FirstName,lastName=student.LastName)
                     SilverToken.objects.create(user=user,tokenDate=date,tokenTime=time)
                 else:
                     goldToken=GoldToken.objects.get(user=user)
