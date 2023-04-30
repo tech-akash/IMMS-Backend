@@ -538,16 +538,21 @@ def getReport(request,*args, **kwargs):
 
 @api_view(['GET'])
 def getallUserTransactions(request,*args, **kwargs):
-    transactions=Transactions.objects.all().order_by('-timeStamp')
+    transactions=Transactions.objects.all().order_by('-date','-time')
+    print(transactions)
     serializer=TransactionSerializer(transactions,many=True)
+    print(serializer.data)
     return Response(serializer.data)
 
 @api_view(['POST'])
 def getuserTransactions(request,*args, **kwargs):
     try:
+        # print("hii")
         user=User.objects.get(username=request.data['username'])
+        # print(user)
+        # print()
         student=Student.objects.get(user=user)
-        transactions=Transactions.objects.filter(email=student.email).order_by('-timeStamp')
+        transactions=Transactions.objects.filter(email=student.email).order_by('-date','-time')
         serializer=TransactionSerializer(transactions,many=True)
         return Response(serializer.data)
     except:
