@@ -75,11 +75,13 @@ def login_view(request):
         type=Student.objects.get(user=user).type
 
     except:
-        # print('user created')
+        print('user created')
         User.objects.create(username=username,password=email)
         user=User.objects.get(username=username)
+        print(user)
         type='Student'
-        Student.objects.create(user=user,FirstName=data['token']['given_name'],LastName=data['token']['family_name'],email=email,type='Student')
+        stu=Student.objects.create(user=user,FirstName=data['token']['given_name'],LastName=data['token']['family_name'],email=email,type='Student')
+        print(stu)
         GoldToken.objects.create(user=user)
     return Response({'status':200,'type':type,'username':username,'firstname':firstName,'lastname':lastName,'email':email})
 
