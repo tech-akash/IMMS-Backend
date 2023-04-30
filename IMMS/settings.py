@@ -202,7 +202,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTH_USER_MODEL = 'mess.User' 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000",    ]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://institute-meal.netlify.app"   ]
 
 # SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
 #     'https://www.googleapis.com/auth/userinfo.email',
@@ -216,7 +216,7 @@ CRONJOBS = [
     ('30 0 * * *', 'mess.cron.get_registered_user'),
 ]
 
-SITE_URL='http://localhost:3000'
+SITE_URL='https://institute-meal.netlify.app/'
 
 STRIPE_SECRET_KEY=os.environ.get("STRIPE_SECRET_KEY")
 
