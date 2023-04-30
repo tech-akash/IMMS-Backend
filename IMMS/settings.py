@@ -216,7 +216,7 @@ CRONJOBS = [
     ('30 0 * * *', 'mess.cron.get_registered_user'),
 ]
 
-SITE_URL='https://institute-meal.netlify.app/'
+SITE_URL='https://institute-meal.netlify.app'
 
 STRIPE_SECRET_KEY=os.environ.get("STRIPE_SECRET_KEY")
 
