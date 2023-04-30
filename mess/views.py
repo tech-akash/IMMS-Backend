@@ -527,7 +527,7 @@ def leaveView(request,*args, **kwargs):
 @api_view(['GET'])
 def getReport(request,*args, **kwargs):
     list=[]
-    for x in range(1,2):
+    for x in range(0,10):
         date=(datetime.now(ist)-timedelta(x)).date()
         print(date)
         register_student=0
